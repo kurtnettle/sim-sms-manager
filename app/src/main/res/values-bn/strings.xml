@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="app_name">সিম এসএমএস ম্যানেজার</string>
+    <string name="source_code">সোর্স কোড</string>
+    <string name="report_issue">অভিযোগ জানান</string>
+    <string name="no_messages">কোনো মেসেজ পাওয়া যায়নি</string>
+    <string name="no_messages_sub">সিম কার্ডে কোনো মেসেজ সংরক্ষিত নেই</string>
+    <string name="select_sim">কোনো সিম কার্ড নির্বাচন করা হয়নি</string>
+    <string name="select_sim_sub">মেসেজগুলো দেখতে একটি সিম কার্ড নির্বাচন করুন</string>
+    <string name="export_dialog">মেসেজগুলো এক্সপোর্ট করুন</string>
+    <string name="export_dialog_sub">এক্সপোর্ট ফরম্যাট নির্বাচন করুন</string>
+    <string name="cancel">বাতিল করুন</string>
+    <string name="export_json">JSON ফরম্যাটে এক্সপোর্ট</string>
+    <string name="export_json_sub">সমস্ত মেসেজ প্রোপার্টি অন্তর্ভুক্ত</string>
+    <string name="export_fossify">ফসিফাই মেসেজেস এর জন্য এক্সপোর্ট</string>
+    <string name="export_fossify_sub">ফসিফাই মেসেজেস ইম্পোর্ট সামঞ্জস্যের জন্য প্রস্তুত</string>
+    <string name="export_quik">কুইক এসএমএস এর জন্য এক্সপোর্ট</string>
+    <string name="export_quik_sub">কুইক এসএমএস ইম্পোর্ট সামঞ্জস্যের জন্য প্রস্তুত</string>
+    <string name="required_permissions_title">প্রয়োজনীয় অনুমতিসমূহ</string>
+    <string name="required_permissions_desc">অ্যাপটির সম্পূর্ণ কার্যকারিতার জন্য নিচের অনুমতিগুলো প্রয়োজন:</string>
+    <string name="perm_read_sms_title">রিড এসএমএস</string>
+    <string name="perm_read_sms_desc">এসএমএস অ্যাক্সেস করার জন্য প্রয়োজন</string>
+    <string name="perm_phone_state_title">রিড ফোন স্টেট</string>
+    <string name="perm_phone_state_desc">সিম কার্ডের বিবরণ পেতে প্রয়োজন</string>
+    <string name="perm_storage_title">রাইট এক্সটার্নাল স্টোরেজ</string>
+    <string name="perm_storage_desc">Android 9 (Pie) বা তার পূর্বের ডিভাইসে এক্সপোর্ট ফাইল সেভ করতে প্রয়োজন</string>
+    <string name="export_success">মেসেজগুলো সফলভাবে এক্সপোর্ট করা হয়েছে</string>
+    <string name="export_failed">মেসেজগুলো এক্সপোর্ট করতে ব্যর্থ: <xliff:g example="IOException">%1$s</xliff:g></string>
+    <string name="message_properties">মেসেজ প্রোপার্টিজ</string>
+    <string name="sim_card_properties">সিম কার্ড প্রোপার্টিজ</string>
+    <string name="loading_messages">সিম কার্ড থেকে মেসেজগুলো লোড করা হচ্ছে…</string>
+    <string name="close">বন্ধ করুন</string>
+    <string name="copy">কপি করুন</string>
+    <string name="copied_to_clipboard">ক্লিপবোর্ডে কপি করা হয়েছে</string>
+</resources>

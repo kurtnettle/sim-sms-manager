@@ -1,0 +1,35 @@
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="app_name">SIM SMS Manager</string>
+    <string name="app_name_short" translatable="false">SS Manager</string>
+    <string name="source_code">Source Code</string>
+    <string name="report_issue">Report Issue</string>
+    <string name="no_messages">No messages found</string>
+    <string name="no_messages_sub">This SIM card contains no messages</string>
+    <string name="select_sim">No SIM card is selected</string>
+    <string name="select_sim_sub">Select a SIM card to view messages</string>
+    <string name="export_dialog">Export Messages</string>
+    <string name="export_dialog_sub">Select the format you want to export your messages in:</string>
+    <string name="cancel">Cancel</string>
+    <string name="export_json">Export as JSON</string>
+    <string name="export_json_sub">Includes all available properties of messages</string>
+    <string name="export_fossify">Export for Fossify Messages</string>
+    <string name="export_fossify_sub">Prepared for Fossify Messages import compatibility</string>
+    <string name="export_quik">Export for QUIK SMS</string>
+    <string name="export_quik_sub">Prepared for QUIK SMS import compatibility</string>
+    <string name="required_permissions_title">Required Permissions</string>
+    <string name="required_permissions_desc">App needs the following permissions for full functionality</string>
+    <string name="perm_read_sms_title">Read SMS</string>
+    <string name="perm_read_sms_desc">For accessing the SMS</string>
+    <string name="perm_phone_state_title">Read Phone State</string>
+    <string name="perm_phone_state_desc">For fetching SIM details</string>
+    <string name="perm_storage_title">Write External Storage</string>
+    <string name="perm_storage_desc">Required to save export files on devices running Android 9 (Pie) or earlier</string>
+    <string name="export_success">Exported messages successfully</string>
+    <string name="export_failed">Failed to export messages: <xliff:g example="IOException">%1$s</xliff:g></string>
+    <string name="message_properties">Message Properties</string>
+    <string name="sim_card_properties">SIM card Properties</string>
+    <string name="loading_messages">Loading messages from SIM card…</string>
+    <string name="close">Close</string>
+    <string name="copy">Copy</string>
+    <string name="copied_to_clipboard">Copied to clipboard</string>
+</resources>
