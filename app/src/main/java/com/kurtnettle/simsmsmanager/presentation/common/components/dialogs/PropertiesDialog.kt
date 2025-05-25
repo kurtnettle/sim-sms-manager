@@ -59,18 +59,16 @@ fun PropertiesDialog(
             dismissOnClickOutside = true
         )
     ) {
-        Card(
-            shape = MaterialTheme.shapes.extraLarge,
+        Surface(
             modifier = Modifier
-                .padding(24.dp)
                 .widthIn(min = 280.dp, max = 560.dp)
+                .padding(horizontal = 16.dp),
+            shape = MaterialTheme.shapes.extraLarge,
+            tonalElevation = 6.dp,
+            shadowElevation = 6.dp
         ) {
             Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.Start
+                modifier = Modifier.padding(24.dp)
             ) {
                 Text(
                     text = title,
