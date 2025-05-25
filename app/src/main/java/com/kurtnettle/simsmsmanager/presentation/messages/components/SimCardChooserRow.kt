@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -26,6 +27,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.kurtnettle.simsmsmanager.R
@@ -76,9 +78,11 @@ fun SimCardChooserRow(
             Box(
                 modifier = Modifier
                     .clip(MaterialTheme.shapes.medium)
-                    .background(
-                        color = if (isSelected) MaterialTheme.colorScheme.primaryContainer
-                        else MaterialTheme.colorScheme.surfaceVariant
+                    .background(MaterialTheme.colorScheme.surfaceVariant)
+                    .border(
+                        width = if (isSelected) 1.dp else 0.dp,
+                        color = if (isSelected) MaterialTheme.colorScheme.outline else Color.Transparent,
+                        shape = MaterialTheme.shapes.medium
                     )
                     .combinedClickable(
                         interactionSource = interactionSource,
@@ -89,7 +93,8 @@ fun SimCardChooserRow(
                         })
                     .padding(vertical = 8.dp, horizontal = 16.dp)
                     .animateContentSize(),
-                contentAlignment = Alignment.Center) {
+                contentAlignment = Alignment.Center
+            ) {
                 Text(
                     text = getCarrierName(sub),
                     style = MaterialTheme.typography.labelLarge,
