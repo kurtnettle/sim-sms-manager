@@ -35,23 +35,23 @@ A lightweight offline Android app to manage SMS on your SIM card.
 <table>
     <tr>
         <td>
-            <img src="docs/screenshots/A.png" width="360vh" /></td>
+            <img src="docs/screenshots/A.webp" width="360vh" /></td>
         <td>
-            <img src="docs/screenshots/B.png" width="360vh" /></td>
+            <img src="docs/screenshots/B.webp" width="360vh" /></td>
         </td>
     </tr>
     <tr>
         <td>
-            <img src="docs/screenshots/C.png" width="360vh" /></td>
+            <img src="docs/screenshots/C.webp" width="360vh" /></td>
         <td>
-            <img src="docs/screenshots/D.png" width="360vh" /></td>
+            <img src="docs/screenshots/D.webp" width="360vh" /></td>
         </td>
     </tr>
     <tr>
         <td>
-            <img src="docs/screenshots/E.png" width="360vh" /></td>
+            <img src="docs/screenshots/E.webp" width="360vh" /></td>
         <td>
-            <img src="docs/screenshots/F.png" width="360vh" /></td>
+            <img src="docs/screenshots/F.webp" width="360vh" /></td>
         </td>
     </tr>
 </table>
