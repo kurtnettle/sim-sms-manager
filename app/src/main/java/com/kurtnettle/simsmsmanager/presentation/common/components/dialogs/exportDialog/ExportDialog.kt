@@ -44,10 +44,11 @@ fun ExportDialog(
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val export = ExportRepository()
+    val selectedSubId by viewModel.selectedSubId.collectAsState(initial = -1)
     val simMessages by viewModel.simMessages.collectAsState(initial = emptyList())
 
     fun getTimestampForFilename(): String {
-        return SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+        return SimpleDateFormat("yyyyMMdd-HHmmss", Locale.getDefault()).format(Date())
     }
 
     fun handleExport(backupType: BackupType) {
@@ -72,7 +73,8 @@ fun ExportDialog(
         }
 
         scope.launch {
-            val filename = "SSManager_${exportApp}_${getTimestampForFilename()}.json"
+            val filename =
+                "SSManager-Sim${selectedSubId}-${exportApp}-${getTimestampForFilename()}.json"
             try {
                 export.saveFile(context, filename, json)
                 Toast.makeText(
