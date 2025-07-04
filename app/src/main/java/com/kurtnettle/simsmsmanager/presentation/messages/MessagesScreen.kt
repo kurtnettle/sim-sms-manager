@@ -90,7 +90,7 @@ fun MessagesScreen(
                 if (isLoadingSimMessages) {
                     LoadingMessageProgress()
                 } else {
-                    MessageList(simMessages)
+                    MessageList(simMessages, { viewModel.getSimMessages() })
                 }
             }
         }

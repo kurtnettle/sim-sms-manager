@@ -11,21 +11,38 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Inbox
 import androidx.compose.material.icons.outlined.SimCard
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults.Indicator
+import androidx.compose.material3.pulltorefresh.pullToRefresh
+import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.kurtnettle.simsmsmanager.R
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MessageList(messages: List<Map<String, String>>?) {
+fun MessageList(
+    messages: List<Map<String, String>>?, onRefresh: () -> Unit
+) {
+    var isRefreshing by remember { mutableStateOf(false) }
+    val refreshState = rememberPullToRefreshState()
+
     Box(
         modifier = Modifier
             .fillMaxSize()
+            .pullToRefresh(
+                state = refreshState, isRefreshing = isRefreshing, onRefresh = onRefresh
+            )
     ) {
         if (messages.isNullOrEmpty()) {
             var title = stringResource(R.string.no_messages)
@@ -64,18 +81,20 @@ fun MessageList(messages: List<Map<String, String>>?) {
 
         } else {
             LazyColumn(
-                modifier = Modifier
-                    .fillMaxSize(),
+                modifier = Modifier.fillMaxSize(),
                 contentPadding = PaddingValues(vertical = 4.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 itemsIndexed(messages) { index, message ->
-                    MessageItem(
-                        message = message,
-
-                        )
+                    MessageItem(message = message)
                 }
             }
+
+            Indicator(
+                modifier = Modifier.align(Alignment.TopCenter),
+                isRefreshing = isRefreshing,
+                state = refreshState
+            )
         }
     }
 }
