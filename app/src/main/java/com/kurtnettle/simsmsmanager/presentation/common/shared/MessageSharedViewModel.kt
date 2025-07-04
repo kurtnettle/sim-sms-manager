@@ -65,7 +65,7 @@ class MessageSharedViewModel(
     }
 
     fun updateSelectedSim(subId: Int) {
-        if (_selectedSubId.value == subId) return
+        if (_selectedSubId.value == subId || _isLoading.value) return
 
         _isLoading.value = true
         _selectedSubId.value = subId
