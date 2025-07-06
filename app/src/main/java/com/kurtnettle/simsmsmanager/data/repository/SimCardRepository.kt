@@ -1,12 +1,15 @@
 package com.kurtnettle.simsmsmanager.data.repository
 
 import android.Manifest
+import android.app.role.RoleManager
 import android.content.ContentResolver
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
+import android.provider.Telephony
 import android.telephony.SubscriptionInfo
 import android.telephony.SubscriptionManager
+import android.util.Log
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import kotlinx.coroutines.Dispatchers
@@ -79,5 +82,37 @@ class SimCardRepository(private val context: Context) {
         }
 
         return smsList
+    }
+
+    /**
+     * Delete SMS messages for a specific SIM card.
+     * @param subId subscription ID of the SIM card
+     * @param messageIds list of message indexes to delete
+     * @return List of deleted SMS index
+     * @throws Exception if fails to delete message
+     */
+    suspend fun deleteSimMessages(subId: Int, messageIds: List<String>): List<String> {
+        val deletedMessageIds = mutableListOf<String>()
+
+        return withContext(Dispatchers.IO) {
+            val contentResolver = context.contentResolver
+            messageIds.forEach { messageId ->
+                try {
+                    val uri = "content://sms/icc_subId/$subId/$messageId".toUri()
+
+                    val rowsDeleted = contentResolver.delete(uri, null, null)
+                    if (rowsDeleted > 0) {
+                        Log.d("SSManager", "Deleted message_index $messageId")
+                        deletedMessageIds.add(messageId)
+                    } else {
+                        Log.d("SSManager", "Didn't delete message_index $messageId")
+                    }
+
+                } catch (e: Exception) {
+                    Log.e("SSManager", "Failed to delete message_index $messageId", e)
+                }
+            }
+            deletedMessageIds
+        }
     }
 }

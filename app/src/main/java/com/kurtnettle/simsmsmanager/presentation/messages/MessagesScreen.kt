@@ -9,6 +9,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.width
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Delete
+import androidx.compose.material.icons.outlined.Info
+import androidx.compose.material.icons.outlined.SelectAll
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -19,6 +25,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -27,49 +34,130 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.kurtnettle.simsmsmanager.R
 import com.kurtnettle.simsmsmanager.presentation.common.components.AppTopBar
+import com.kurtnettle.simsmsmanager.presentation.common.components.dialogs.AboutDialog
+import com.kurtnettle.simsmsmanager.presentation.common.components.dialogs.DefaultSmsRequestDialog
+import com.kurtnettle.simsmsmanager.presentation.common.components.dialogs.DeleteConfirmationDialog
 import com.kurtnettle.simsmsmanager.presentation.common.components.dialogs.exportDialog.ExportDialog
 import com.kurtnettle.simsmsmanager.presentation.common.shared.MessageSharedViewModel
 import com.kurtnettle.simsmsmanager.presentation.messages.components.ExportFab
 import com.kurtnettle.simsmsmanager.presentation.messages.components.MessageList
 import com.kurtnettle.simsmsmanager.presentation.messages.components.SimCardChooserRow
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
 @Composable
 fun MessagesScreen(
-    viewModel: MessageSharedViewModel
+    viewModel: MessageSharedViewModel,
+    isDefaultSmsApp: () -> Boolean,
+    onRequestDefaultSms: () -> Unit
 ) {
+    val context = LocalContext.current
+    val scope = rememberCoroutineScope()
+
     val isLoadingSimMessages by viewModel.isLoading.collectAsState(initial = false)
     val allSubInfo by viewModel.allSubInfo.collectAsState(initial = emptyList())
     val selectedSubId by viewModel.selectedSubId.collectAsState(initial = 0)
     val simMessages by viewModel.simMessages.collectAsState(initial = emptyList())
 
-    val context = LocalContext.current
+    var showAboutDialog by remember { mutableStateOf(false) }
+    var showDeleteDialog by remember { mutableStateOf(false) }
     var showExportDialog by remember { mutableStateOf(false) }
+    var showDefaultSmsAppDialog by remember { mutableStateOf(false) }
+
+    val totalMessages = (simMessages?.size?.minus(viewModel.deletedMsgIds.size) ?: 0).toString()
 
     LaunchedEffect(Unit) {
         viewModel.toastFlow.collect { message ->
-            Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
-            delay(Toast.LENGTH_SHORT.toLong())
+            scope.launch {
+                Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+                delay(Toast.LENGTH_SHORT.toLong())
+            }
         }
     }
 
+    if (showAboutDialog) {
+        AboutDialog(onDismiss = { showAboutDialog = false })
+    }
+
+    if (showDefaultSmsAppDialog) {
+        DefaultSmsRequestDialog(
+            onConfirm = onRequestDefaultSms,
+            onDismiss = { showDefaultSmsAppDialog = false }
+        )
+    }
+
+    if (showDeleteDialog) {
+        DeleteConfirmationDialog(
+            onDismiss = { showDeleteDialog = false },
+            onConfirm = { viewModel.deleteSimMessages() },
+            itemCount = viewModel.selectedMsgIds.size
+        )
+    }
+
+    if (showExportDialog) {
+        ExportDialog(
+            viewModel = viewModel,
+            onDismiss = { showExportDialog = false }
+        )
+    }
+
     Scaffold(
-        topBar = { AppTopBar() },
-        floatingActionButton = {
-            if (simMessages?.isNotEmpty() == true) {
+        topBar = {
+            if (viewModel.selectedMsgIds.isEmpty()) {
+                AppTopBar(
+                    title = stringResource(R.string.app_name),
+                    actions = {
+                        IconButton(
+                            onClick = { showAboutDialog = true }
+                        ) {
+                            Icon(
+                                Icons.Outlined.Info,
+                                contentDescription = "About"
+                            )
+                        }
+                    }
+                )
+            } else {
+                AppTopBar(
+                    title = stringResource(
+                        R.string.selected_messages,
+                        viewModel.selectedMsgIds.size,
+                        totalMessages
+                    ),
+                    actions = {
+                        IconButton(
+                            onClick = {
+                                if (isDefaultSmsApp()) showDeleteDialog = true
+                                else showDefaultSmsAppDialog = true
+                            }
+                        ) {
+                            Icon(
+                                Icons.Outlined.SelectAll,
+                                contentDescription = "Select All Messages"
+                            )
+                        }
+
+                        IconButton(
+                            onClick = {
+                                if (isDefaultSmsApp()) showDeleteDialog = true
+                                else showDefaultSmsAppDialog = true
+                            }
+                        ) {
+                            Icon(
+                                Icons.Outlined.Delete,
+                                contentDescription = "Delete"
+                            )
+                        }
+                    }
+                )
+            }
+        }, floatingActionButton = {
+            if (simMessages.orEmpty().isNotEmpty()) {
                 ExportFab({ showExportDialog = true })
             }
-        },
-        contentWindowInsets = WindowInsets.systemBars
+        }, contentWindowInsets = WindowInsets.systemBars
     ) { paddingValues ->
-
-        if (showExportDialog) {
-            ExportDialog(
-                viewModel = viewModel,
-                onDismiss = { showExportDialog = false }
-            )
-        }
 
         Column(
             modifier = Modifier
@@ -79,10 +167,10 @@ fun MessagesScreen(
         ) {
 
             SimCardChooserRow(
-                allSubs = allSubInfo,
-                selectedSubId = selectedSubId,
-                onSimSelected = { viewModel.updateSelectedSim(it) },
-            )
+                allSubs = allSubInfo, selectedSubId = selectedSubId, onSimSelected = {
+                    viewModel.updateSelectedSim(it)
+                    viewModel.clearSelectedMessages()
+                })
 
             Box(
                 modifier = Modifier.weight(1f)
@@ -90,7 +178,16 @@ fun MessagesScreen(
                 if (isLoadingSimMessages) {
                     LoadingMessageProgress()
                 } else {
-                    MessageList(simMessages, { viewModel.getSimMessages() })
+                    MessageList(
+                        simMessages,
+                        onRefresh = { viewModel.getSimMessages() },
+                        deletedMsgIds = viewModel.deletedMsgIds,
+                        selectedMsgIds = viewModel.selectedMsgIds,
+                        onSelectedMsgId = { selectedMsgId ->
+                            viewModel.updateSelectedMessages(
+                                selectedMsgId
+                            )
+                        })
                 }
             }
         }

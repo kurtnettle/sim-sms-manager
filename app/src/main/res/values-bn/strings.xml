@@ -32,4 +32,14 @@
     <string name="close">বন্ধ করুন</string>
     <string name="copy">কপি করুন</string>
     <string name="copied_to_clipboard">ক্লিপবোর্ডে কপি করা হয়েছে</string>
+    <string name="delete_item_title">এই বার্তাটি মুছবেন?</string>
+    <string name="delete_items_title">%dটি বার্তা মুছবেন?</string>
+    <string name="delete_item_message">এই বার্তাটি স্থায়ীভাবে মুছে ফেলা হবে।</string>
+    <string name="delete_items_message">এই বার্তাগুলো স্থায়ীভাবে মুছে ফেলা হবে।</string>
+    <string name="delete">মুছুন</string>
+    <string name="default_sms_dialog_title">ডিফল্ট এসএমএস অ্যাপ</string>
+    <string name="default_sms_dialog_message">বার্তা মুছে ফেলার জন্য এই অ্যাপটিকে আপনার ডিফল্ট এসএমএস হ্যান্ডলার হতে হবে।</string>
+    <string name="set_as_default_action">ডিফল্ট হিসেবে সেট করুন</string>
+    <string name="not_now_action">এখন নয়</string>
+    <string name="selected_messages">%1$s/%2$s নির্বাচিত</string>
 </resources>

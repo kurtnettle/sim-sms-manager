@@ -32,7 +32,11 @@ import com.kurtnettle.simsmsmanager.R
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MessageList(
-    messages: List<Map<String, String>>?, onRefresh: () -> Unit
+    messages: List<Map<String, String>>?,
+    onRefresh: () -> Unit,
+    deletedMsgIds: List<String>,
+    selectedMsgIds: List<String>,
+    onSelectedMsgId: (String) -> Unit,
 ) {
     var isRefreshing by remember { mutableStateOf(false) }
     val refreshState = rememberPullToRefreshState()
@@ -41,7 +45,9 @@ fun MessageList(
         modifier = Modifier
             .fillMaxSize()
             .pullToRefresh(
-                state = refreshState, isRefreshing = isRefreshing, onRefresh = onRefresh
+                state = refreshState,
+                isRefreshing = isRefreshing,
+                onRefresh = onRefresh
             )
     ) {
         if (messages.isNullOrEmpty()) {
@@ -85,8 +91,20 @@ fun MessageList(
                 contentPadding = PaddingValues(vertical = 4.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                itemsIndexed(messages) { index, message ->
-                    MessageItem(message = message)
+                itemsIndexed(
+                    items = messages,
+                    key = { _, message -> message["index_on_icc"].orEmpty() }
+                ) { index, message ->
+                    val messageId = message["index_on_icc"].orEmpty()
+
+                    if (!deletedMsgIds.contains(messageId)) {
+                        MessageItem(
+                            message = message,
+                            isSelected = selectedMsgIds.contains(messageId),
+                            onSelected = { if (messageId != "") onSelectedMsgId(messageId) },
+                            hasMultiSelect = selectedMsgIds.isNotEmpty()
+                        )
+                    }
                 }
             }
 

@@ -32,4 +32,14 @@
     <string name="close">Close</string>
     <string name="copy">Copy</string>
     <string name="copied_to_clipboard">Copied to clipboard</string>
+    <string name="delete_item_title">Delete this message?</string>
+    <string name="delete_items_title">Delete %d messages?</string>
+    <string name="delete_item_message">This message will be permanently deleted.</string>
+    <string name="delete_items_message">These messages will be permanently deleted.</string>
+    <string name="delete">Delete</string>
+    <string name="default_sms_dialog_title">Default SMS App</string>
+    <string name="default_sms_dialog_message">To delete messages, this app needs to be your default SMS handler.</string>
+    <string name="set_as_default_action">Set as Default</string>
+    <string name="not_now_action">Not Now</string>
+    <string name="selected_messages">%1$s/%2$s selected</string>
 </resources>
