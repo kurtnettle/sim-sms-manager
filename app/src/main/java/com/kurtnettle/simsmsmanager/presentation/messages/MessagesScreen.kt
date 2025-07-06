@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Delete
+import androidx.compose.material.icons.outlined.Deselect
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.SelectAll
 import androidx.compose.material3.Icon
@@ -60,6 +61,7 @@ fun MessagesScreen(
     val selectedSubId by viewModel.selectedSubId.collectAsState(initial = 0)
     val simMessages by viewModel.simMessages.collectAsState(initial = emptyList())
 
+    var toggledSelectAll by remember { mutableStateOf(false) }
     var showAboutDialog by remember { mutableStateOf(false) }
     var showDeleteDialog by remember { mutableStateOf(false) }
     var showExportDialog by remember { mutableStateOf(false) }
@@ -126,18 +128,31 @@ fun MessagesScreen(
                         totalMessages
                     ),
                     actions = {
-                        IconButton(
-                            onClick = {
-                                if (isDefaultSmsApp()) showDeleteDialog = true
-                                else showDefaultSmsAppDialog = true
+                        if (toggledSelectAll) {
+                            IconButton(
+                                onClick = {
+                                    viewModel.toggleSelectAll(false)
+                                    toggledSelectAll = false
+                                }
+                            ) {
+                                Icon(
+                                    Icons.Outlined.Deselect,
+                                    contentDescription = "Deselect All Messages"
+                                )
                             }
-                        ) {
-                            Icon(
-                                Icons.Outlined.SelectAll,
-                                contentDescription = "Select All Messages"
-                            )
+                        } else {
+                            IconButton(
+                                onClick = {
+                                    viewModel.toggleSelectAll(true)
+                                    toggledSelectAll = true
+                                }
+                            ) {
+                                Icon(
+                                    Icons.Outlined.SelectAll,
+                                    contentDescription = "Select All Messages"
+                                )
+                            }
                         }
-
                         IconButton(
                             onClick = {
                                 if (isDefaultSmsApp()) showDeleteDialog = true

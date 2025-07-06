@@ -69,6 +69,19 @@ class MessageSharedViewModel(
         }
     }
 
+    fun toggleSelectAll(select: Boolean) {
+        _selectedMsgIds.apply {
+            clear()
+            if (select) {
+                _simMessages.value?.forEach { message ->
+                    message["index_on_icc"]?.let { id ->
+                        add(id)
+                    }
+                }
+            }
+        }
+    }
+
     fun clearSelectedMessages() {
         _selectedMsgIds.clear()
     }
