@@ -1,16 +1,20 @@
 # SIM SMS Manager
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+![GitHub Release](https://img.shields.io/github/v/release/kurtnettle/sim-sms-manager)
+
 [![Android](https://img.shields.io/badge/Android-3DDC84?logo=android&logoColor=white)](https://developer.android.com)
 [![Min SDK](https://img.shields.io/badge/Min%20SDK-22-34A853)](https://developer.android.com/about/versions/pie)
 [![Target SDK](https://img.shields.io/badge/Target%20SDK-35-0C344B)](https://developer.android.com/about/versions/14)
 [![Kotlin](https://img.shields.io/badge/Kotlin-7F52FF?logo=kotlin&logoColor=white)](https://kotlinlang.org)
 [![Jetpack Compose](https://img.shields.io/badge/Jetpack_Compose-4285F4?logo=jetpack-compose&logoColor=white)](https://developer.android.com/jetpack/compose)
 
-A lightweight offline Android app to manage SMS on your SIM card.
+A lightweight offline Android app to manage SMS on your SIM card memory.
 
 ## Table of Contents
 
+- [SIM SMS Manager](#sim-sms-manager)
+  - [Table of Contents](#table-of-contents)
   - [Features ✨](#features-)
   - [Screenshots 📷](#screenshots-)
   - [Permissions 🔐](#permissions-)
@@ -23,7 +27,7 @@ A lightweight offline Android app to manage SMS on your SIM card.
 
 
 ## Features ✨
-- **View SMS** – Read messages stored on your SIM
+- **Manage SMS** – Read or Delete messages stored in your SIM memory
 - **SIM Details**  – Check ICCID, IMSI, carrier, and more
 - **Export SMS** – Compatible with:
   - [Fossify Messages](https://github.com/FossifyOrg/Messages)
@@ -65,6 +69,8 @@ A lightweight offline Android app to manage SMS on your SIM card.
 | READ_PHONE_STATE       | Retrieve SIM card details like ICCID, IMSI, and carrier info.   |
 | WRITE_EXTERNAL_STORAGE | Save export files on devices running Android 9 (Pie) or earlier |
 
+> [!NOTE]  
+> For **deleting** a **message**, you need to make this app as your **default SMS app**.
 
 ## Compatibility 📱
 
@@ -77,7 +83,7 @@ A lightweight offline Android app to manage SMS on your SIM card.
 - Download the latest APK from [Releases](https://github.com/kurtnettle/sim-sms-manager/releases).
 - Install the APK on your Android device. You may need to enable "Unknown Sources" in your device settings during this step.
 - Grant necessary permissions.
-  * **Note for Android 15 users:** You are required to allow "Restricted Settings" from the App Info for this app.
+  * **Note for Android 15 users:** You may require to allow "Restricted Settings" from the App Info for this app.
 
 
 ## Usage 🛠️
@@ -85,13 +91,18 @@ A lightweight offline Android app to manage SMS on your SIM card.
 1. **Viewing Messages**:
    - Select a SIM card to load messages
    - Tap any message to view further details
-2. **Viewing SIM card details**:
+
+2. **Deleting Messages**:
+   - Tap and hold the message you want to delete. (You may need to make this app default SMS app to delete a message)
+
+
+3. **Viewing SIM card details**:
    - Tap and hold the SIM card name to the view details of the SIM card
 
-3. **Exporting Messages**:
+4. **Exporting Messages**:
    - Click the floating button at the bottom right.
    - Tap on the export format you prefer.
-   - Check your Downloads folder for the exported file.
+   - Check your **Downloads** folder for the exported file.
 
 
 ## Developing 💻
