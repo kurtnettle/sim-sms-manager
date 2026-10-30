@@ -1,7 +1,9 @@
 package com.kurtnettle.simsmsmanager.presentation.messages.components
 
 import android.os.Build
+import android.content.Context
 import android.telephony.SubscriptionInfo
+import android.telephony.TelephonyManager
 import android.util.Log
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.LocalIndication
@@ -29,6 +31,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.kurtnettle.simsmsmanager.R
 import com.kurtnettle.simsmsmanager.presentation.common.components.dialogs.PropertiesDialog
@@ -42,6 +45,7 @@ fun SimCardChooserRow(
     selectedSubId: Int,
     onSimSelected: (Int) -> Unit,
 ) {
+    val context = LocalContext.current
     val scrollState = rememberScrollState()
     var showPropertiesDialog by remember { mutableStateOf(false) }
 
@@ -60,7 +64,8 @@ fun SimCardChooserRow(
         if (showPropertiesDialog) {
             PropertiesDialog(
                 title = stringResource(R.string.sim_card_properties),
-                parseSubscriptionInfoString(allSubs?.getBySubId(selectedSubId).toString()),
+                parseSubscriptionInfoString(allSubs?.getBySubId(selectedSubId).toString()) +
+                    ("IMSI" to getSubscriberId(context, selectedSubId)),
 //                allSubs?.getBySubId(selectedSubId)?.asMap().orEmpty(),
 //                mapOf(
 //                    "props" to allSubs?.getBySubId(selectedSubId)?.toString()
@@ -104,6 +109,22 @@ fun SimCardChooserRow(
 
             Spacer(Modifier.padding(horizontal = 4.dp))
         }
+    }
+}
+
+// Android restricts IMSI access to privileged callers, including the default SMS app.
+@Suppress("MissingPermission")
+fun getSubscriberId(context: Context, subId: Int): String {
+    return try {
+        val telephony = context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
+        val selectedTelephony = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            telephony.createForSubscriptionId(subId)
+        } else {
+            return "Unavailable on this Android version"
+        }
+        selectedTelephony.subscriberId ?: "Unavailable"
+    } catch (e: SecurityException) {
+        "Unavailable: default SMS role or carrier privileges required"
     }
 }
 
